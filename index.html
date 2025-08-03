@@ -1,0 +1,1047 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WIKI SHOP - متجر الحسابات المميزة</title>
+    <style>
+        :root {
+            --primary-color: #6c5ce7;
+            --secondary-color: #a29bfe;
+            --accent-color: #fd79a8;
+            --bg-color: #f9f9f9;
+            --text-color: #2d3436;
+            --card-bg: #ffffff;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', sans-serif;
+        }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: all 0.3s ease;
+            overflow-x: hidden;
+        }
+        
+        .maintenance-mode {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            color: white;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            text-align: center;
+            flex-direction: column;
+        }
+        
+        .maintenance-mode.show {
+            display: flex;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path fill="rgba(255,255,255,0.1)" d="M0,0 L100,0 L100,100 L0,100 Z" /></svg>');
+            opacity: 0.3;
+            pointer-events: none;
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            animation: glow 2s infinite alternate;
+        }
+        
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+            }
+            to {
+                text-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+            }
+        }
+        
+        .description {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .menu-btn {
+            position: absolute;
+            left: 1rem;
+            top: 1.5rem;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: transform 0.3s;
+            z-index: 2;
+        }
+        
+        .menu-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: -300px;
+            width: 300px;
+            height: 100%;
+            background-color: white;
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+            transition: right 0.3s ease;
+            z-index: 100;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .sidebar.open {
+            right: 0;
+        }
+        
+        .sidebar a {
+            padding: 1rem;
+            margin: 0.5rem 0;
+            background-color: var(--secondary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .sidebar a:hover {
+            background-color: var(--primary-color);
+            transform: translateX(-5px);
+        }
+        
+        .close-btn {
+            align-self: flex-end;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            margin-bottom: 1rem;
+        }
+        
+        .container {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .accounts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .account-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .account-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .account-card:hover::after {
+            opacity: 1;
+        }
+        
+        .account-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(108, 92, 231, 0.2), rgba(253, 121, 168, 0.2));
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+        
+        .account-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+        
+        .account-card:hover .account-img {
+            transform: scale(1.05);
+        }
+        
+        .account-info {
+            padding: 1.5rem;
+        }
+        
+        .account-title {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+        
+        .account-desc {
+            color: var(--text-color);
+            opacity: 0.8;
+            line-height: 1.5;
+        }
+        
+        .no-accounts {
+            text-align: center;
+            grid-column: 1 / -1;
+            padding: 2rem;
+            font-size: 1.2rem;
+            color: var(--text-color);
+            opacity: 0.7;
+        }
+        
+        .login-form {
+            max-width: 500px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .login-form h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border 0.3s;
+        }
+        
+        .form-group input:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .admin-panel, .agent-panel {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .panel-title {
+            color: var(--primary-color);
+            font-size: 1.5rem;
+        }
+        
+        .panel-actions {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .panel-btn {
+            padding: 0.5rem 1rem;
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .panel-btn:hover {
+            background-color: var(--primary-color);
+        }
+        
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background-color: var(--bg-color);
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            color: var(--text-color);
+            opacity: 0.8;
+        }
+        
+        .settings-form {
+            margin-top: 2rem;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-col {
+            flex: 1;
+        }
+        
+        .color-picker {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .color-preview {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 2px solid #ddd;
+            cursor: pointer;
+        }
+        
+        .account-form {
+            margin-top: 2rem;
+        }
+        
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .delete-btn {
+            background-color: #ff7675;
+        }
+        
+        .delete-btn:hover {
+            background-color: #d63031;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            .accounts-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-row {
+                flex-direction: column;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Maintenance Mode -->
+    <div class="maintenance-mode">
+        <p>يرجى الانتظار، الموقع قيد الصيانة حاليًا</p>
+    </div>
+    
+    <!-- Header -->
+    <header>
+        <button class="menu-btn">☰</button>
+        <div class="header-content">
+            <h1>WIKI SHOP</h1>
+            <p class="description">منصة متكاملة لبيع الحسابات المميزة بتجربة مستخدم فريدة</p>
+        </div>
+    </header>
+    
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <button class="close-btn">×</button>
+        <a href="#" class="home-link">الصفحة الرئيسية</a>
+        <a href="#" class="admin-link">صفحة المدير</a>
+        <a href="#" class="agent-link">صفحة الوكيل</a>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="container">
+        <div id="home-page">
+            <div class="accounts-grid" id="accounts-container">
+                <!-- Accounts will be loaded here -->
+            </div>
+        </div>
+        
+        <!-- Login Pages -->
+        <div id="admin-login-page" class="hidden">
+            <div class="login-form">
+                <h2>تسجيل دخول المدير</h2>
+                <div class="form-group">
+                    <label for="admin-password">كلمة المرور</label>
+                    <input type="password" id="admin-password" placeholder="أدخل كلمة المرور">
+                </div>
+                <button class="submit-btn" id="admin-login-btn">دخول</button>
+            </div>
+        </div>
+        
+        <div id="agent-login-page" class="hidden">
+            <div class="login-form">
+                <h2>تسجيل دخول الوكيل</h2>
+                <div class="form-group">
+                    <label for="agent-password">كلمة المرور</label>
+                    <input type="password" id="agent-password" placeholder="أدخل كلمة المرور">
+                </div>
+                <button class="submit-btn" id="agent-login-btn">دخول</button>
+            </div>
+        </div>
+        
+        <!-- Admin Panel -->
+        <div id="admin-panel" class="hidden">
+            <div class="admin-panel">
+                <div class="panel-header">
+                    <h2 class="panel-title">لوحة تحكم المدير</h2>
+                    <div class="panel-actions">
+                        <button class="panel-btn" id="logout-admin">تسجيل خروج</button>
+                    </div>
+                </div>
+                
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <div class="stat-value" id="today-visitors">0</div>
+                        <div class="stat-label">زوار اليوم</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="whatsapp-visitors">0</div>
+                        <div class="stat-label">زوار من واتساب</div>
+                    </div>
+                </div>
+                
+                <div class="settings-form">
+                    <h3>إعدادات الموقع</h3>
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label>لون الموقع الرئيسي</label>
+                                <div class="color-picker">
+                                    <input type="color" id="primary-color" value="#6c5ce7">
+                                    <div class="color-preview" id="primary-preview" style="background-color: #6c5ce7;"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label>لون الموقع الثانوي</label>
+                                <div class="color-picker">
+                                    <input type="color" id="secondary-color" value="#a29bfe">
+                                    <div class="color-preview" id="secondary-preview" style="background-color: #a29bfe;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="maintenance-mode"> وضع الصيانة
+                        </label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>تغيير كلمة مرور المدير</label>
+                        <input type="password" id="new-admin-password" placeholder="كلمة المرور الجديدة">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>تغيير كلمة مرور الوكيل</label>
+                        <input type="password" id="new-agent-password" placeholder="كلمة المرور الجديدة">
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button class="panel-btn" id="save-settings">حفظ الإعدادات</button>
+                    </div>
+                </div>
+                
+                <div class="account-form">
+                    <h3>إدارة الحسابات</h3>
+                    <div class="form-group">
+                        <label for="account-title">عنوان الحساب</label>
+                        <input type="text" id="account-title" placeholder="أدخل عنوان الحساب">
+                    </div>
+                    <div class="form-group">
+                        <label for="account-desc">وصف الحساب (اختياري)</label>
+                        <textarea id="account-desc" class="form-control" rows="3" placeholder="أدخل وصف الحساب"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="account-image">صورة الحساب</label>
+                        <input type="file" id="account-image" accept="image/*">
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button class="panel-btn delete-btn" id="delete-account">حذف الحساب المحدد</button>
+                        <button class="panel-btn" id="add-account">إضافة حساب</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Agent Panel -->
+        <div id="agent-panel" class="hidden">
+            <div class="agent-panel">
+                <div class="panel-header">
+                    <h2 class="panel-title">لوحة تحكم الوكيل</h2>
+                    <div class="panel-actions">
+                        <button class="panel-btn" id="logout-agent">تسجيل خروج</button>
+                    </div>
+                </div>
+                
+                <div class="account-form">
+                    <h3>إدارة الحسابات</h3>
+                    <div class="form-group">
+                        <label for="agent-account-title">عنوان الحساب</label>
+                        <input type="text" id="agent-account-title" placeholder="أدخل عنوان الحساب">
+                    </div>
+                    <div class="form-group">
+                        <label for="agent-account-desc">وصف الحساب (اختياري)</label>
+                        <textarea id="agent-account-desc" class="form-control" rows="3" placeholder="أدخل وصف الحساب"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="agent-account-image">صورة الحساب</label>
+                        <input type="file" id="agent-account-image" accept="image/*">
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button class="panel-btn delete-btn" id="agent-delete-account">حذف الحساب المحدد</button>
+                        <button class="panel-btn" id="agent-add-account">إضافة حساب</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Audio Elements -->
+    <audio id="hover-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-hover-click-notification-358.mp3" preload="auto"></audio>
+    <audio id="click-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-select-click-1109.mp3" preload="auto"></audio>
+    
+    <script>
+        // App State
+        const state = {
+            accounts: JSON.parse(localStorage.getItem('wiki-shop-accounts')) || [],
+            adminPassword: localStorage.getItem('wiki-shop-admin-pass')) || 'ertyuuop',
+            agentPassword: localStorage.getItem('wiki-shop-agent-pass')) || 'agent123',
+            maintenanceMode: localStorage.getItem('wiki-shop-maintenance') === 'true',
+            primaryColor: localStorage.getItem('wiki-shop-primary-color')) || '#6c5ce7',
+            secondaryColor: localStorage.getItem('wiki-shop-secondary-color')) || '#a29bfe',
+            todayVisitors: parseInt(localStorage.getItem('wiki-shop-today-visitors')) || 0,
+            whatsappVisitors: parseInt(localStorage.getItem('wiki-shop-whatsapp-visitors')) || 0,
+            selectedAccount: null
+        };
+        
+        // DOM Elements
+        const elements = {
+            menuBtn: document.querySelector('.menu-btn'),
+            sidebar: document.querySelector('.sidebar'),
+            closeBtn: document.querySelector('.close-btn'),
+            homeLink: document.querySelector('.home-link'),
+            adminLink: document.querySelector('.admin-link'),
+            agentLink: document.querySelector('.agent-link'),
+            accountsContainer: document.getElementById('accounts-container'),
+            homePage: document.getElementById('home-page'),
+            adminLoginPage: document.getElementById('admin-login-page'),
+            agentLoginPage: document.getElementById('agent-login-page'),
+            adminPanel: document.getElementById('admin-panel'),
+            agentPanel: document.getElementById('agent-panel'),
+            adminPasswordInput: document.getElementById('admin-password'),
+            agentPasswordInput: document.getElementById('agent-password'),
+            adminLoginBtn: document.getElementById('admin-login-btn'),
+            agentLoginBtn: document.getElementById('agent-login-btn'),
+            logoutAdmin: document.getElementById('logout-admin'),
+            logoutAgent: document.getElementById('logout-agent'),
+            maintenanceMode: document.getElementById('maintenance-mode'),
+            maintenanceOverlay: document.querySelector('.maintenance-mode'),
+            primaryColorInput: document.getElementById('primary-color'),
+            secondaryColorInput: document.getElementById('secondary-color'),
+            primaryPreview: document.getElementById('primary-preview'),
+            secondaryPreview: document.getElementById('secondary-preview'),
+            newAdminPassword: document.getElementById('new-admin-password'),
+            newAgentPassword: document.getElementById('new-agent-password'),
+            saveSettings: document.getElementById('save-settings'),
+            accountTitle: document.getElementById('account-title'),
+            accountDesc: document.getElementById('account-desc'),
+            accountImage: document.getElementById('account-image'),
+            addAccount: document.getElementById('add-account'),
+            deleteAccount: document.getElementById('delete-account'),
+            agentAccountTitle: document.getElementById('agent-account-title'),
+            agentAccountDesc: document.getElementById('agent-account-desc'),
+            agentAccountImage: document.getElementById('agent-account-image'),
+            agentAddAccount: document.getElementById('agent-add-account'),
+            agentDeleteAccount: document.getElementById('agent-delete-account'),
+            todayVisitorsEl: document.getElementById('today-visitors'),
+            whatsappVisitorsEl: document.getElementById('whatsapp-visitors'),
+            hoverSound: document.getElementById('hover-sound'),
+            clickSound: document.getElementById('click-sound')
+        };
+        
+        // Initialize App
+        function init() {
+            // Check if coming from WhatsApp
+            if (document.referrer.includes('whatsapp.com')) {
+                state.whatsappVisitors++;
+                localStorage.setItem('wiki-shop-whatsapp-visitors', state.whatsappVisitors);
+            }
+            
+            // Update today's visitors
+            const lastVisitDate = localStorage.getItem('wiki-shop-last-visit');
+            const today = new Date().toDateString();
+            
+            if (lastVisitDate !== today) {
+                localStorage.setItem('wiki-shop-last-visit', today);
+                state.todayVisitors = 1;
+            } else {
+                state.todayVisitors++;
+            }
+            
+            localStorage.setItem('wiki-shop-today-visitors', state.todayVisitors);
+            
+            // Apply settings
+            applySettings();
+            
+            // Render accounts
+            renderAccounts();
+            
+            // Event Listeners
+            setupEventListeners();
+        }
+        
+        // Apply saved settings
+        function applySettings() {
+            // Colors
+            document.documentElement.style.setProperty('--primary-color', state.primaryColor);
+            document.documentElement.style.setProperty('--secondary-color', state.secondaryColor);
+            elements.primaryColorInput.value = state.primaryColor;
+            elements.secondaryColorInput.value = state.secondaryColor;
+            elements.primaryPreview.style.backgroundColor = state.primaryColor;
+            elements.secondaryPreview.style.backgroundColor = state.secondaryColor;
+            
+            // Maintenance mode
+            elements.maintenanceMode.checked = state.maintenanceMode;
+            if (state.maintenanceMode) {
+                elements.maintenanceOverlay.classList.add('show');
+            }
+            
+            // Stats
+            elements.todayVisitorsEl.textContent = state.todayVisitors;
+            elements.whatsappVisitorsEl.textContent = state.whatsappVisitors;
+        }
+        
+        // Render accounts
+        function renderAccounts() {
+            elements.accountsContainer.innerHTML = '';
+            
+            if (state.accounts.length === 0) {
+                elements.accountsContainer.innerHTML = `
+                    <div class="no-accounts">
+                        لا يوجد حسابات حاليًا، يرجى العودة لاحقًا.
+                    </div>
+                `;
+                return;
+            }
+            
+            state.accounts.forEach((account, index) => {
+                const accountCard = document.createElement('div');
+                accountCard.className = 'account-card';
+                accountCard.dataset.index = index;
+                
+                accountCard.innerHTML = `
+                    <img src="${account.image}" alt="${account.title}" class="account-img">
+                    <div class="account-info">
+                        <h3 class="account-title">${account.title}</h3>
+                        ${account.desc ? `<p class="account-desc">${account.desc}</p>` : ''}
+                    </div>
+                `;
+                
+                elements.accountsContainer.appendChild(accountCard);
+            });
+        }
+        
+        // Setup event listeners
+        function setupEventListeners() {
+            // Menu toggle
+            elements.menuBtn.addEventListener('click', () => {
+                elements.sidebar.classList.add('open');
+                playSound('click');
+            });
+            
+            elements.closeBtn.addEventListener('click', () => {
+                elements.sidebar.classList.remove('open');
+                playSound('click');
+            });
+            
+            // Navigation links
+            elements.homeLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                showPage('home');
+                elements.sidebar.classList.remove('open');
+                playSound('click');
+            });
+            
+            elements.adminLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                showPage('admin-login');
+                elements.sidebar.classList.remove('open');
+                playSound('click');
+            });
+            
+            elements.agentLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                showPage('agent-login');
+                elements.sidebar.classList.remove('open');
+                playSound('click');
+            });
+            
+            // Login buttons
+            elements.adminLoginBtn.addEventListener('click', () => {
+                if (elements.adminPasswordInput.value === state.adminPassword) {
+                    showPage('admin-panel');
+                    playSound('click');
+                } else {
+                    alert('كلمة المرور غير صحيحة');
+                    playSound('click');
+                }
+            });
+            
+            elements.agentLoginBtn.addEventListener('click', () => {
+                if (elements.agentPasswordInput.value === state.agentPassword) {
+                    showPage('agent-panel');
+                    playSound('click');
+                } else {
+                    alert('كلمة المرور غير صحيحة');
+                    playSound('click');
+                }
+            });
+            
+            // Logout buttons
+            elements.logoutAdmin.addEventListener('click', () => {
+                showPage('home');
+                playSound('click');
+            });
+            
+            elements.logoutAgent.addEventListener('click', () => {
+                showPage('home');
+                playSound('click');
+            });
+            
+            // Settings
+            elements.maintenanceMode.addEventListener('change', (e) => {
+                state.maintenanceMode = e.target.checked;
+                localStorage.setItem('wiki-shop-maintenance', state.maintenanceMode);
+                
+                if (state.maintenanceMode) {
+                    elements.maintenanceOverlay.classList.add('show');
+                } else {
+                    elements.maintenanceOverlay.classList.remove('show');
+                }
+                
+                playSound('click');
+            });
+            
+            elements.primaryColorInput.addEventListener('input', (e) => {
+                state.primaryColor = e.target.value;
+                elements.primaryPreview.style.backgroundColor = state.primaryColor;
+                playSound('hover');
+            });
+            
+            elements.secondaryColorInput.addEventListener('input', (e) => {
+                state.secondaryColor = e.target.value;
+                elements.secondaryPreview.style.backgroundColor = state.secondaryColor;
+                playSound('hover');
+            });
+            
+            elements.saveSettings.addEventListener('click', () => {
+                // Update colors
+                document.documentElement.style.setProperty('--primary-color', state.primaryColor);
+                document.documentElement.style.setProperty('--secondary-color', state.secondaryColor);
+                
+                // Update passwords if changed
+                if (elements.newAdminPassword.value) {
+                    state.adminPassword = elements.newAdminPassword.value;
+                    localStorage.setItem('wiki-shop-admin-pass', state.adminPassword);
+                    elements.newAdminPassword.value = '';
+                }
+                
+                if (elements.newAgentPassword.value) {
+                    state.agentPassword = elements.newAgentPassword.value;
+                    localStorage.setItem('wiki-shop-agent-pass', state.agentPassword);
+                    elements.newAgentPassword.value = '';
+                }
+                
+                // Save colors
+                localStorage.setItem('wiki-shop-primary-color', state.primaryColor);
+                localStorage.setItem('wiki-shop-secondary-color', state.secondaryColor);
+                
+                alert('تم حفظ الإعدادات بنجاح');
+                playSound('click');
+            });
+            
+            // Account management (admin)
+            elements.addAccount.addEventListener('click', () => {
+                const title = elements.accountTitle.value;
+                const desc = elements.accountDesc.value;
+                const file = elements.accountImage.files[0];
+                
+                if (!title || !file) {
+                    alert('الرجاء إدخال عنوان الحساب وصورة');
+                    playSound('click');
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const newAccount = {
+                        title,
+                        desc,
+                        image: e.target.result
+                    };
+                    
+                    state.accounts.push(newAccount);
+                    localStorage.setItem('wiki-shop-accounts', JSON.stringify(state.accounts));
+                    
+                    elements.accountTitle.value = '';
+                    elements.accountDesc.value = '';
+                    elements.accountImage.value = '';
+                    
+                    renderAccounts();
+                    alert('تم إضافة الحساب بنجاح');
+                    playSound('click');
+                };
+                
+                reader.readAsDataURL(file);
+            });
+            
+            elements.deleteAccount.addEventListener('click', () => {
+                if (state.selectedAccount === null) {
+                    alert('الرجاء تحديد حساب للحذف');
+                    playSound('click');
+                    return;
+                }
+                
+                if (confirm('هل أنت متأكد من حذف هذا الحساب؟')) {
+                    state.accounts.splice(state.selectedAccount, 1);
+                    localStorage.setItem('wiki-shop-accounts', JSON.stringify(state.accounts));
+                    state.selectedAccount = null;
+                    
+                    renderAccounts();
+                    alert('تم حذف الحساب بنجاح');
+                    playSound('click');
+                }
+            });
+            
+            // Account management (agent)
+            elements.agentAddAccount.addEventListener('click', () => {
+                const title = elements.agentAccountTitle.value;
+                const desc = elements.agentAccountDesc.value;
+                const file = elements.agentAccountImage.files[0];
+                
+                if (!title || !file) {
+                    alert('الرجاء إدخال عنوان الحساب وصورة');
+                    playSound('click');
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const newAccount = {
+                        title,
+                        desc,
+                        image: e.target.result
+                    };
+                    
+                    state.accounts.push(newAccount);
+                    localStorage.setItem('wiki-shop-accounts', JSON.stringify(state.accounts));
+                    
+                    elements.agentAccountTitle.value = '';
+                    elements.agentAccountDesc.value = '';
+                    elements.agentAccountImage.value = '';
+                    
+                    renderAccounts();
+                    alert('تم إضافة الحساب بنجاح');
+                    playSound('click');
+                };
+                
+                reader.readAsDataURL(file);
+            });
+            
+            elements.agentDeleteAccount.addEventListener('click', () => {
+                if (state.selectedAccount === null) {
+                    alert('الرجاء تحديد حساب للحذف');
+                    playSound('click');
+                    return;
+                }
+                
+                if (confirm('هل أنت متأكد من حذف هذا الحساب؟')) {
+                    state.accounts.splice(state.selectedAccount, 1);
+                    localStorage.setItem('wiki-shop-accounts', JSON.stringify(state.accounts));
+                    state.selectedAccount = null;
+                    
+                    renderAccounts();
+                    alert('تم حذف الحساب بنجاح');
+                    playSound('click');
+                }
+            });
+            
+            // Account selection
+            elements.accountsContainer.addEventListener('click', (e) => {
+                const accountCard = e.target.closest('.account-card');
+                if (accountCard) {
+                    const index = parseInt(accountCard.dataset.index);
+                    state.selectedAccount = index;
+                    
+                    // Highlight selected card
+                    document.querySelectorAll('.account-card').forEach(card => {
+                        card.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.1)';
+                    });
+                    
+                    accountCard.style.boxShadow = '0 0 0 3px var(--accent-color)';
+                    playSound('click');
+                }
+            });
+            
+            // Hover effects with sound
+            document.querySelectorAll('button, a, .account-card').forEach(el => {
+                el.addEventListener('mouseenter', () => playSound('hover'));
+            });
+        }
+        
+        // Show specific page
+        function showPage(page) {
+            // Hide all pages
+            elements.homePage.classList.add('hidden');
+            elements.adminLoginPage.classList.add('hidden');
+            elements.agentLoginPage.classList.add('hidden');
+            elements.adminPanel.classList.add('hidden');
+            elements.agentPanel.classList.add('hidden');
+            
+            // Clear password fields
+            elements.adminPasswordInput.value = '';
+            elements.agentPasswordInput.value = '';
+            
+            // Show selected page
+            switch (page) {
+                case 'home':
+                    elements.homePage.classList.remove('hidden');
+                    break;
+                case 'admin-login':
+                    elements.adminLoginPage.classList.remove('hidden');
+                    break;
+                case 'agent-login':
+                    elements.agentLoginPage.classList.remove('hidden');
+                    break;
+                case 'admin-panel':
+                    elements.adminPanel.classList.remove('hidden');
+                    break;
+                case 'agent-panel':
+                    elements.agentPanel.classList.remove('hidden');
+                    break;
+            }
+        }
+        
+        // Play sound effects
+        function playSound(type) {
+            if (type === 'hover') {
+                elements.hoverSound.currentTime = 0;
+                elements.hoverSound.play();
+            } else if (type === 'click') {
+                elements.clickSound.currentTime = 0;
+                elements.clickSound.play();
+            }
+        }
+        
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
