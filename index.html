@@ -3,240 +3,473 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WIKI SHOP</title>
+    <title>فويس إيه آي - ثورة في عالم الأصوات الاصطناعية</title>
     <style>
-        :root {
-            --primary: #6c5ce7;
-            --secondary: #a29bfe;
-            --accent: #fd79a8;
-            --bg: #f9f9f9;
-            --text: #2d3436;
-        }
-        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Tajawal', sans-serif;
         }
-        
+
+        :root {
+            --dark-blue: #0F1C3F;
+            --gold: #FFD700;
+            --white: #FFFFFF;
+            --electric-blue: #00A8FF;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
         body {
-            background: var(--bg);
-            color: var(--text);
+            font-family: 'Tajawal', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--dark-blue);
+            color: var(--white);
+            overflow-x: hidden;
         }
-        
-        header {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 1rem 3rem;
-            text-align: center;
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             position: relative;
+            background: linear-gradient(135deg, var(--dark-blue) 0%, #1a2a5a 100%);
+            overflow: hidden;
         }
-        
-        .menu-btn {
+
+        .particles {
             position: absolute;
-            right: 1rem;
-            top: 1rem;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-        
-        .sidebar {
-            position: fixed;
-            top: 0;
-            right: -250px;
-            width: 250px;
+            width: 100%;
             height: 100%;
-            background: white;
-            transition: right 0.3s;
-            z-index: 100;
-            padding: 1rem;
+            overflow: hidden;
         }
-        
-        .sidebar.open {
-            right: 0;
+
+        .particle {
+            position: absolute;
+            background: var(--gold);
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: float 20s infinite linear;
         }
-        
-        .close-btn {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
+
+        @keyframes float {
+            from {
+                transform: translateY(100vh) translateX(0);
+            }
+            to {
+                transform: translateY(-100vh) translateX(100px);
+            }
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 10;
+            padding: 2rem;
+        }
+
+        h1 {
+            font-size: 3.5rem;
             margin-bottom: 1rem;
+            background: linear-gradient(45deg, var(--gold), var(--electric-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: glow 2s ease-in-out infinite alternate;
         }
-        
-        .sidebar a {
-            display: block;
-            padding: 0.8rem;
-            margin: 0.5rem 0;
-            background: var(--secondary);
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
+
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.5)); }
+            to { filter: drop-shadow(0 0 30px rgba(0, 168, 255, 0.5)); }
         }
-        
-        .container {
-            padding: 1rem;
+
+        .slogan {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
         }
-        
-        .accounts-grid {
+
+        .cta-button {
+            background: linear-gradient(45deg, var(--gold), #FFA500);
+            color: var(--dark-blue);
+            padding: 1rem 3rem;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            margin-bottom: 3rem;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(255, 215, 0, 0.3);
+        }
+
+        .stats {
+            display: flex;
+            gap: 3rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--gold);
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+
+        /* Features Grid */
+        .features {
+            padding: 5rem 2rem;
+            background: var(--dark-blue);
+        }
+
+        .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--gold);
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1rem;
+            background: linear-gradient(45deg, var(--electric-blue), var(--gold));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+
+        /* Creator Dashboard */
+        .dashboard {
+            padding: 3rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .upload-area {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 2px dashed var(--gold);
+            border-radius: 20px;
+            padding: 3rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .upload-area:hover {
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        .audio-controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .control-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            padding: 1.5rem;
+        }
+
+        .slider {
+            width: 100%;
+            margin: 1rem 0;
+            -webkit-appearance: none;
+            height: 5px;
+            border-radius: 5px;
+            background: var(--glass-border);
+            outline: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--gold);
+            cursor: pointer;
+        }
+
+        .emotion-picker {
+            display: flex;
             gap: 1rem;
+            flex-wrap: wrap;
             margin-top: 1rem;
         }
-        
-        .account-card {
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        
-        .account-img {
-            width: 100%;
-            height: 150px;
-            object-fit: cover;
-        }
-        
-        .account-info {
-            padding: 1rem;
-        }
-        
-        .login-form {
-            max-width: 400px;
-            margin: 2rem auto;
-            padding: 1rem;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        
-        .form-group {
-            margin-bottom: 1rem;
-        }
-        
-        .form-group input {
-            width: 100%;
-            padding: 0.8rem;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-        
-        .submit-btn {
-            width: 100%;
-            padding: 0.8rem;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 5px;
+
+        .emotion-btn {
+            padding: 0.5rem 1rem;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 25px;
+            color: var(--white);
             cursor: pointer;
+            transition: all 0.3s ease;
         }
-        
-        .hidden {
-            display: none;
+
+        .emotion-btn:hover, .emotion-btn.active {
+            background: var(--gold);
+            color: var(--dark-blue);
+            border-color: var(--gold);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .slogan {
+                font-size: 1.2rem;
+            }
+            
+            .stats {
+                gap: 2rem;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Loading Animation */
+        .loader {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            border: 3px solid var(--glass-border);
+            border-top: 3px solid var(--gold);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Glassmorphism Effect */
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
         }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <button class="menu-btn">☰</button>
-        <h1>WIKI SHOP</h1>
-        <p>منصة متكاملة لبيع الحسابات المميزة</p>
-    </header>
-    
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <button class="close-btn">×</button>
-        <a href="#" class="home-link">الصفحة الرئيسية</a>
-        <a href="#" class="admin-link">صفحة المدير</a>
-        <a href="#" class="agent-link">صفحة الوكيل</a>
-    </div>
-    
-    <!-- Main Content -->
-    <div class="container">
-        <div id="home-page">
-            <div class="accounts-grid" id="accounts-container">
-                <!-- Accounts will be loaded here -->
-            </div>
-        </div>
-        
-        <!-- Login Pages -->
-        <div id="admin-login-page" class="hidden">
-            <div class="login-form">
-                <h2>تسجيل دخول المدير</h2>
-                <div class="form-group">
-                    <input type="password" id="admin-password" placeholder="كلمة المرور">
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="particles" id="particles"></div>
+        <div class="hero-content">
+            <h1>ثورة في عالم الأصوات الاصطناعية</h1>
+            <p class="slogan">فقط 10 ثواني تفصلك عن صوتك الذكي</p>
+            <button class="cta-button">جرب الآن مجاناً</button>
+            <div class="stats">
+                <div class="stat">
+                    <div class="stat-number">10,000+</div>
+                    <div class="stat-label">مستخدم</div>
                 </div>
-                <button class="submit-btn" id="admin-login-btn">دخول</button>
-            </div>
-        </div>
-        
-        <div id="agent-login-page" class="hidden">
-            <div class="login-form">
-                <h2>تسجيل دخول الوكيل</h2>
-                <div class="form-group">
-                    <input type="password" id="agent-password" placeholder="كلمة المرور">
+                <div class="stat">
+                    <div class="stat-number">99.8%</div>
+                    <div class="stat-label">دقة</div>
                 </div>
-                <button class="submit-btn" id="agent-login-btn">دخول</button>
+                <div class="stat">
+                    <div class="stat-number">30 ثانية</div>
+                    <div class="stat-label">وقت المعالجة</div>
+                </div>
             </div>
         </div>
-    </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 3rem;">المميزات</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🎙️</div>
+                <h3>معالجة صوتية فورية</h3>
+                <p>حوّل نصك إلى صوت بجودة احترافية في ثوانٍ معدودة</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎨</div>
+                <h3>نغمات عاطفية متعددة</h3>
+                <p>اختر من بين مجموعة متنوعة من النغمات العاطفية لصوتك</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔒</div>
+                <h3>خصوصية تامة</h3>
+                <p>حماية كاملة لبياناتك مع حذف الملفات تلقائياً بعد 24 ساعة</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3>سرعة فائقة</h3>
+                <p>معالجة سريعة مع دقة عالية تصل إلى 99.8%</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Creator Dashboard -->
+    <section class="dashboard">
+        <h2 style="text-align: center; font-size: 2.5rem; margin-bottom: 3rem;">لوحة التحكم</h2>
+        
+        <div class="upload-area">
+            <div class="feature-icon" style="margin-bottom: 1rem;">📁</div>
+            <h3>اسحب وأفلت ملفاتك هنا</h3>
+            <p>الصيغ المدعومة: MP3, WAV, M4A</p>
+            <input type="file" id="audioFile" accept="audio/*" style="display: none;">
+            <button class="cta-button" style="margin-top: 1rem;" onclick="document.getElementById('audioFile').click()">
+                اختر ملف
+            </button>
+        </div>
+
+        <div class="audio-controls">
+            <div class="control-panel">
+                <h3>🔊 التحكم في السرعة</h3>
+                <input type="range" class="slider" min="0.5" max="2" step="0.1" value="1">
+                <div style="display: flex; justify-content: space-between;">
+                    <span>بطيء</span>
+                    <span>عادي</span>
+                    <span>سريع</span>
+                </div>
+            </div>
+            
+            <div class="control-panel">
+                <h3>🎭 النغمة العاطفية</h3>
+                <div class="emotion-picker">
+                    <button class="emotion-btn active">مثير</button>
+                    <button class="emotion-btn">درامي</button>
+                    <button class="emotion-btn">حزين</button>
+                    <button class="emotion-btn">مشوق</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="glass" style="margin-top: 2rem;">
+            <h3>📝 المحرر النصي</h3>
+            <textarea placeholder="أدخل نصك هنا... يصل إلى 50,000 كلمة" 
+                      style="width: 100%; height: 200px; background: var(--glass-bg); 
+                             border: 1px solid var(--glass-border); border-radius: 10px; 
+                             padding: 1rem; color: var(--white); font-size: 1rem; 
+                             margin-top: 1rem; resize: vertical;">
+            </textarea>
+            <div style="text-align: left; margin-top: 0.5rem; opacity: 0.7;">
+                <span id="wordCount">0</span>/50,000
+            </div>
+        </div>
+    </section>
 
     <script>
-        // DOM Elements
-        const menuBtn = document.querySelector('.menu-btn');
-        const sidebar = document.querySelector('.sidebar');
-        const closeBtn = document.querySelector('.close-btn');
-        const homeLink = document.querySelector('.home-link');
-        const adminLink = document.querySelector('.admin-link');
-        const agentLink = document.querySelector('.agent-link');
+        // Particle Animation
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.width = Math.random() * 10 + 5 + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.animationDelay = Math.random() * 20 + 's';
+                particle.style.animationDuration = Math.random() * 20 + 20 + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Word Counter
+        const textarea = document.querySelector('textarea');
+        const wordCount = document.getElementById('wordCount');
         
-        // Toggle sidebar
-        menuBtn.addEventListener('click', () => {
-            sidebar.classList.toggle('open');
+        textarea.addEventListener('input', function() {
+            const words = this.value.trim().split(/\s+/).filter(word => word.length > 0);
+            wordCount.textContent = words.length;
         });
-        
-        closeBtn.addEventListener('click', () => {
-            sidebar.classList.remove('open');
+
+        // Emotion Buttons
+        const emotionButtons = document.querySelectorAll('.emotion-btn');
+        emotionButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                emotionButtons.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            });
         });
+
+        // Initialize
+        createParticles();
+
+        // Smooth Scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // File Upload Animation
+        const uploadArea = document.querySelector('.upload-area');
+        const audioFile = document.getElementById('audioFile');
         
-        // Navigation
-        homeLink.addEventListener('click', (e) => {
+        uploadArea.addEventListener('dragover', (e) => {
             e.preventDefault();
-            document.getElementById('home-page').classList.remove('hidden');
-            document.getElementById('admin-login-page').classList.add('hidden');
-            document.getElementById('agent-login-page').classList.add('hidden');
-            sidebar.classList.remove('open');
+            uploadArea.style.background = 'rgba(255, 215, 0, 0.2)';
         });
         
-        adminLink.addEventListener('click', (e) => {
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.style.background = 'var(--glass-bg)';
+        });
+        
+        uploadArea.addEventListener('drop', (e) => {
             e.preventDefault();
-            document.getElementById('home-page').classList.add('hidden');
-            document.getElementById('admin-login-page').classList.remove('hidden');
-            document.getElementById('agent-login-page').classList.add('hidden');
-            sidebar.classList.remove('open');
-        });
-        
-        agentLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            document.getElementById('home-page').classList.add('hidden');
-            document.getElementById('admin-login-page').classList.add('hidden');
-            document.getElementById('agent-login-page').classList.remove('hidden');
-            sidebar.classList.remove('open');
-        });
-        
-        // Close sidebar when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!sidebar.contains(e.target) && e.target !== menuBtn) {
-                sidebar.classList.remove('open');
+            uploadArea.style.background = 'var(--glass-bg)';
+            // Handle file drop
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                audioFile.files = files;
+                uploadArea.innerHTML = '<div class="loader"></div><p>جاري رفع الملف...</p>';
+                setTimeout(() => {
+                    uploadArea.innerHTML = '<div class="feature-icon">✅</div><h3>تم رفع الملف بنجاح</h3>';
+                }, 2000);
             }
         });
     </script>
 </body>
-                                      </html>
+    </html>
